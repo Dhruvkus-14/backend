@@ -9,9 +9,15 @@
 <body class="bg-gray-900 text-white min-h-screen flex justify-center px-4 py-6">
     <div class="w-full max-w-3xl">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="text-4xl font-bold text-white">🌍 Global Feed</h3>
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-md overflow-hidden border border-gray-700">
+                    <img class="w-full h-full object-cover" src="/images/uploads/<%= user.profilepic %>" alt="Profile Picture">
+                </div>
+                <h3 class="text-4xl font-bold text-white">🌍 Global Feed</h3>
+            </div>
             <div class="flex space-x-3">
                 <a class="bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90 transition px-5 py-2 rounded-xl text-sm font-medium shadow-lg" href="/profile">My Posts</a>
+                <a class="bg-blue-500 hover:bg-blue-600 transition px-5 py-2 rounded-xl text-sm font-medium shadow-lg" href="/profile/upload">Upload Photo</a>
                 <a class="bg-red-500 hover:bg-red-600 transition px-5 py-2 rounded-xl text-sm font-medium shadow-lg" href="/logout">Logout</a>
             </div>
         </div>
@@ -23,11 +29,20 @@
             <% posts.reverse().forEach(function(post){ %>
                 <div class="post bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 hover:border-blue-500 transition">
                     <div class="flex justify-between items-center mb-3">
-                        <% if (post.user && post.user.username) { %>
-                            <h4 class="text-blue-400 font-semibold text-lg">@<%= post.user.username %></h4>
-                        <% } else { %>
-                            <h4 class="text-gray-500 font-semibold text-lg">@Unknown</h4>
-                        <% } %>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full overflow-hidden border border-gray-600">
+                                <% if (post.user && post.user.profilepic) { %>
+                                    <img class="w-full h-full object-cover" src="/images/uploads/<%= post.user.profilepic %>" alt="User Profile">
+                                <% } else { %>
+                                    <img class="w-full h-full object-cover" src="/images/default-avatar.png" alt="Default Avatar">
+                                <% } %>
+                            </div>
+                            <% if (post.user && post.user.username) { %>
+                                <h4 class="text-blue-400 font-semibold text-lg">@<%= post.user.username %></h4>
+                            <% } else { %>
+                                <h4 class="text-gray-500 font-semibold text-lg">@Unknown</h4>
+                            <% } %>
+                        </div>
                         <small class="text-gray-400"><%= post.likes.length %> Likes</small>
                     </div>
                     <p class="text-gray-300 text-lg mb-3"><%= post.content %></p>

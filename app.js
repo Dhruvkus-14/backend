@@ -1,20 +1,37 @@
 const express = require('express');
 const app = express();
+const path = require("path");
 const postModel = require("./models/post");
 const userModel = require("./models/user");
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const postRoutes = require("./routes/postRoutes");
+const upload = require("./config/multerconfig");
+
 
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
+
 
 app.get('/', (req, res) => {
     res.render("index");
 });
+
+app.get("/profile/upload", (req, res) => {
+    res.render("profileupload");
+});
+
+app.post("/upload", isLoggedIn, upload.single("image"), async (req, res) => {
+    let user = await userModel.findOne({ email: req.user.email });
+    user.profilepic = req.file.filename;
+    await user.save();
+    res.redirect("/profile");
+});
+
 
 app.get('/login', (req, res) => {
     res.render("login");
@@ -30,6 +47,7 @@ app.get("/feed", isLoggedIn, async (req, res) => {
     let posts = await postModel.find().populate("user").populate("comments.user");
     res.render("feed", { user: req.user, posts });
 });
+
 
 
 app.get("/like/:id", isLoggedIn, async (req, res) => {
