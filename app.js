@@ -10,7 +10,7 @@ const postRoutes = require("./routes/postRoutes");
 const upload = require("./config/multerconfig");
 require("dotenv").config();
 const SECRET_KEY = process.env.SECRET_KEY;
-
+const PORT = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 app.use(express.json());
@@ -182,4 +182,6 @@ function isLoggedIn(req, res, next) {
     }
 }
 
-app.listen(3000);
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
