@@ -176,7 +176,7 @@ app.get('/logout', (req, res) => {
 function isLoggedIn(req, res, next) {
     if (req.cookies.token === "") res.redirect("/login");
     else {
-        let data = jwt.verify(req.cookies.token, "shhhh");
+        let data = jwt.verify(req.cookies.token, SECRET_KEY);
         req.user = data;
         next();
     }
