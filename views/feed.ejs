@@ -6,43 +6,61 @@
     <title>Feed</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-zinc-900 to-zinc-800 text-white min-h-screen flex justify-center px-4">
-    <div class="w-full max-w-2xl mt-10">
-
-        <div class="flex justify-between items-center">
-            <h3 class="text-3xl font-semibold">🌍 Global Feed</h3>
-            <a class="bg-blue-500 hover:bg-blue-600 transition px-4 py-2 rounded-lg text-sm font-medium shadow-md" href="/profile">My Posts</a>
+<body class="bg-gray-900 text-white min-h-screen flex justify-center px-4 py-6">
+    <div class="w-full max-w-3xl">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-4xl font-bold text-white">🌍 Global Feed</h3>
+            <div class="flex space-x-3">
+                <a class="bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90 transition px-5 py-2 rounded-xl text-sm font-medium shadow-lg" href="/profile">My Posts</a>
+                <a class="bg-red-500 hover:bg-red-600 transition px-5 py-2 rounded-xl text-sm font-medium shadow-lg" href="/logout">Logout</a>
+            </div>
         </div>
-        <h5 class="text-gray-400 mt-1">See what others are sharing.</h5>
+        
+        <h5 class="text-gray-400 mb-4">See what others are sharing.</h5>
 
         <!-- All Users' Posts -->
-        <div class="posts mt-10">
-            <h3 class="text-zinc-400 text-lg font-semibold">Recent Posts</h3>
-            <div class="postcontainer mt-4 space-y-4">
-
-                <% posts.reverse().forEach(function(post){ %>
-                    <div class="post bg-zinc-800 p-5 rounded-lg shadow-md border border-zinc-700 backdrop-blur-lg transition transform hover:scale-[1.02] hover:border-blue-500 duration-300">
-                        <div class="flex justify-between items-center">
-                            <% if (post.user && post.user.username) { %>
-                                <h4 class="text-blue-400 font-semibold">@<%= post.user.username %></h4>
-                            <% } else { %>
-                                <h4 class="text-gray-500 font-semibold">@Unknown</h4>
-                            <% } %>
-                            <small class="text-gray-500"><%= post.likes.length %> Likes</small>
-                        </div>
-                        <p class="text-sm text-gray-300 mt-2"><%= post.content %></p>
-                        <div class="flex justify-between items-center mt-3">
-                            <a class="text-blue-400 hover:text-blue-500 transition font-medium" href="/like/<%= post._id %>">
-                                <%= post.likes.includes(user._id) ? "Unlike" : "Like" %>
-                            </a>
-                            <% if (post.user && post.user._id && user && user._id && post.user._id.toString() === user._id.toString()) { %>
-                                <a class="text-gray-500 hover:text-gray-400 transition font-medium" href="/edit/<%= post._id %>">Edit</a>
-                            <% } %>
-                        </div>
+        <div class="posts space-y-6">
+            <% posts.reverse().forEach(function(post){ %>
+                <div class="post bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 hover:border-blue-500 transition">
+                    <div class="flex justify-between items-center mb-3">
+                        <% if (post.user && post.user.username) { %>
+                            <h4 class="text-blue-400 font-semibold text-lg">@<%= post.user.username %></h4>
+                        <% } else { %>
+                            <h4 class="text-gray-500 font-semibold text-lg">@Unknown</h4>
+                        <% } %>
+                        <small class="text-gray-400"><%= post.likes.length %> Likes</small>
                     </div>
-                <% }) %>
-
-            </div>
+                    <p class="text-gray-300 text-lg mb-3"><%= post.content %></p>
+                    <div class="flex justify-between items-center">
+                        <a class="text-blue-400 hover:text-blue-500 font-medium" href="/like/<%= post._id %>">
+                            <%= post.likes.includes(user._id) ? "Unlike" : "Like" %>
+                        </a>
+                        <% if (post.user && post.user._id && user && user._id && post.user._id.toString() === user._id.toString()) { %>
+                            <a class="text-gray-400 hover:text-gray-300 font-medium" href="/edit/<%= post._id %>">Edit</a>  
+                        <% } %>
+                    </div>
+                    
+                    <!-- Comments Section -->
+                    <div class="comments mt-4 bg-gray-700 p-4 rounded-xl">
+                        <h4 class="text-gray-300 text-sm font-semibold mb-2">Comments</h4>
+                        <div class="comment-list max-h-40 overflow-y-auto space-y-3">
+                            <% post.comments.forEach(function(comment){ %>
+                                <div class="comment bg-gray-800 p-3 rounded-lg border border-gray-600">
+                                    <strong class="text-blue-400">@<%= comment.user.username %></strong>
+                                    <p class="text-gray-300 text-sm"><%= comment.text %></p>
+                                    <small class="text-gray-500 text-xs"><%= new Date(comment.createdAt).toLocaleString() %></small>
+                                </div>
+                            <% }) %>
+                        </div>
+                        
+                        <!-- Comment Form -->
+                        <form class="mt-3 flex space-x-2" method="post" action="/comment/<%= post._id %>">
+                            <input type="text" name="text" placeholder="Write a comment..." class="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-600 focus:ring-2 focus:ring-blue-500 outline-none">
+                            <button class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md">Comment</button>
+                        </form>
+                    </div>
+                </div>
+            <% }) %>
         </div>
     </div>
 </body>

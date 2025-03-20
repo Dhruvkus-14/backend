@@ -22,4 +22,9 @@ const postSchema = mongoose.Schema({
     ]
 });
 
+// Ensure comments are populated with usernames
+postSchema.pre(/^find/, function () {
+    this.populate("comments.user", "username");
+});
+
 module.exports = mongoose.model("post", postSchema);

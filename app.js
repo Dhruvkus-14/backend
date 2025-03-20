@@ -5,6 +5,7 @@ const userModel = require("./models/user");
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
+const postRoutes = require("./routes/postRoutes");
 
 app.set("view engine", "ejs");
 app.use(express.json());
