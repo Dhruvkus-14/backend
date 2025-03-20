@@ -8,6 +8,8 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const postRoutes = require("./routes/postRoutes");
 const upload = require("./config/multerconfig");
+require("dotenv").config();
+const SECRET_KEY = process.env.SECRET_KEY;
 
 
 app.set("view engine", "ejs");
@@ -142,7 +144,7 @@ app.post('/register', async (req, res) => {
                 password: hash
             });
 
-            let token = jwt.sign({ email: email, userid: user._id }, "shhhh");
+            let token = jwt.sign({ email: email, userid: user._id }, SECRET_KEY);
             res.cookie("token", token);
             res.redirect("/login");
         });
@@ -157,7 +159,7 @@ app.post('/login', async (req, res) => {
 
     bcrypt.compare(password, user.password, function (err, result) {
         if (result) {
-            let token = jwt.sign({ email: email, userid: user._id }, "shhhh");
+            let token = jwt.sign({ email: email, userid: user._id }, SECRET_KEY);
             res.cookie("token", token);
             res.status(200).redirect("/profile");
         } else {
