@@ -12,8 +12,8 @@
         <!-- Header -->
         <div class="flex justify-between items-center">
             <h3 class="text-3xl font-semibold">👋 Hello, <span class="text-blue-400"><%= user.name %></span></h3>
-            <div class="space-x-3">
-                <a class="bg-gray-500 hover:bg-gray-600 transition px-4 py-2 rounded-lg text-sm font-medium shadow-md" href="/feed">View Feed</a>
+            <div class="flex space-x-3">
+                <a class="bg-green-500 hover:bg-green-600 transition px-4 py-2 rounded-lg text-sm font-medium shadow-md" href="/feed">Feed</a>
                 <a class="bg-red-500 hover:bg-red-600 transition px-4 py-2 rounded-lg text-sm font-medium shadow-md" href="/logout">Logout</a>
             </div>
         </div>
@@ -43,7 +43,12 @@
                             <a class="text-blue-400 hover:text-blue-500 transition font-medium" href="/like/<%= post._id %>">
                                 <%= post.likes.indexOf(user._id) === -1 ? "Like" :"Unlike" %>
                             </a>
-                            <a class="text-gray-500 hover:text-gray-400 transition font-medium" href="/edit/<%= post._id %>">Edit</a>
+                            <div class="flex space-x-3">
+                                <a class="text-gray-500 hover:text-gray-400 transition font-medium" href="/edit/<%= post._id %>">Edit</a>
+                                <form method="post" action="/delete/<%= post._id %>" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                    <button class="text-red-500 hover:text-red-400 transition font-medium">Delete</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 <% }) %>
