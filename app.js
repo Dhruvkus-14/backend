@@ -1,3 +1,7 @@
+require("dotenv").config();
+
+const SECRET_KEY = process.env.SECRET_KEY;
+const PORT = process.env.PORT || 8000;
 const express = require('express');
 const app = express();
 const path = require("path");
@@ -8,9 +12,7 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const postRoutes = require("./routes/postRoutes");
 const upload = require("./config/multerconfig");
-require("dotenv").config();
-const SECRET_KEY = process.env.SECRET_KEY;
-const PORT = process.env.PORT || 3000;
+
 
 app.set("view engine", "ejs");
 app.use(express.json());

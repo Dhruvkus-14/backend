@@ -1,6 +1,9 @@
+require("dotenv").config();
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb://127.0.0.1:27017/miniproject");
+mongoose
+  .connect(process.env.MONGO_URL )
+  .then((e)=> console.log("mongodb connected"));
 
 const userSchema = mongoose.Schema({
     username: String,
